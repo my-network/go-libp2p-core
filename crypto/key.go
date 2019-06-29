@@ -358,7 +358,21 @@ func KeyEqual(k1, k2 Key) bool {
 		return true
 	}
 
-	b1, err1 := k1.Bytes()
-	b2, err2 := k2.Bytes()
-	return bytes.Equal(b1, b2) && err1 == err2
+	return k1.Equals(k2)
+}
+
+func basicEquals(k1, k2 Key) bool {
+	if k1.Type() != k2.Type() {
+		return false
+	}
+
+	a, err := k1.Raw()
+	if err != nil {
+		return false
+	}
+	b, err := k2.Raw()
+	if err != nil {
+		return false
+	}
+	return bytes.Equal(a, b)
 }
